@@ -41,23 +41,35 @@ class HabitNotifier extends StateNotifier<AsyncValue<List<Habit>>> {
     await isar.writeTxn(() async {
       await isar.habits.put(habit);
     });
-    
-    // Schedule Notification
-    final timeParts = habit.targetTime.split(':');
-    if (timeParts.length == 2) {
-      final now = DateTime.now();
-      var targetTime = DateTime(now.year, now.month, now.day, int.parse(timeParts[0]), int.parse(timeParts[1]));
       
-      // If time has already passed today, schedule for tomorrow
-      if (targetTime.isBefore(now)) {
-        targetTime = targetTime.add(const Duration(days: 1));
+    // Schedule Notification
+    try {
+      final timeParts = habit.targetTime.split(':');
+      if (timeParts.length == 2) {
+        final now = DateTime.now();
+        var targetTime = DateTime(now.year, now.month, now.day, int.parse(timeParts[0]), int.parse(timeParts[1]));
+        
+        // If time has already passed today, schedule for tomorrow
+        if (targetTime.isBefore(now)) {
+          targetTime = targetTime.add(const Duration(days: 1));
+        }
+        await _notificationService.scheduleTwoStageNotification(
+          id: habit.id,
+          title: habit.title,
+          scheduledTime: targetTime,
+        );
       }
-
-      await _notificationService.scheduleTwoStageNotification(
-        id: habit.id,
-        title: habit.title,
-        scheduledTime: targetTime,
+    } catch (e) {
+      // Ignore notification errors 
+    }
+    // ADD HABIT NOTIFICATION
+    try {
+      await _notificationService.showAddHabitNotification(
+          id: habit.id,
+          title: habit.title,
       );
+    } catch (e) {
+      // Ignore notification errors
     }
 
     await loadHabits();

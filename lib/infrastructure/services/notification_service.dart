@@ -12,8 +12,15 @@ class LocalNotificationService {
     
     // Initialize timezones
     tz.initializeTimeZones();
-    final timeZoneName = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(timeZoneName.toString()));
+    final tzInfo = await FlutterTimezone.getLocalTimezone();
+    String timeZoneName = tzInfo.toString();
+    
+    // Parse "TimezoneInfo(Asia/Jakarta, ...)" to "Asia/Jakarta" if needed
+    if (timeZoneName.startsWith('TimezoneInfo(')) {
+      timeZoneName = timeZoneName.substring(13).split(',')[0].trim();
+    }
+    
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
 
     const AndroidInitializationSettings androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
     const DarwinInitializationSettings iosInit = DarwinInitializationSettings(
@@ -76,6 +83,23 @@ class LocalNotificationService {
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
+
+  /// Add Notification
+  Future<void> showAddHabitNotification({
+      required int id,
+      required String title,
+      }) async {
+    if (!_initialized) await init();
+    await _plugin.show(
+      id + 7000,
+      'New Habit Sucessfully Added',
+      title,
+      const NotificationDetails(
+        android: AndroidNotificationDetails('add_habit_channel', 'Add Habit Notification', channelDescription: 'Add Habit Notification', importance: Importance.max, priority: Priority.max),
+        iOS: DarwinNotificationDetails(),
+      ),
     );
   }
 }
