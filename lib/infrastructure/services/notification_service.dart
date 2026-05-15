@@ -78,4 +78,18 @@ class LocalNotificationService {
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }
+
+  /// Instant test notification to verify basic permissions
+  Future<void> showImmediateTestNotification() async {
+    if (!_initialized) await init();
+    await _plugin.show(
+      9999,
+      'Test Notification',
+      'If you see this, basic notifications are working!',
+      const NotificationDetails(
+        android: AndroidNotificationDetails('test_channel', 'Test Channel', importance: Importance.max, priority: Priority.max),
+        iOS: DarwinNotificationDetails(),
+      ),
+    );
+  }
 }

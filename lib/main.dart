@@ -13,7 +13,7 @@ Future<void> main() async {
   
   // Initialize notifications & timezone
   final notificationService = LocalNotificationService();
-  await notificationService.init();
+  notificationService.init();
 
   runApp(
     const ProviderScope(
