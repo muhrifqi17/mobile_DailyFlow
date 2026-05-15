@@ -60,14 +60,16 @@ class HabitNotifier extends StateNotifier<AsyncValue<List<Habit>>> {
         );
       }
     } catch (e) {
-      // Ignore notification errors so it doesn't break the UI auto-render
-      print("Failed to schedule notification: $e");
+      // Ignore notification errors 
     }
-    // FIRE IMMEDIATE TEST NOTIFICATION
+    // ADD HABIT NOTIFICATION
     try {
-      await _notificationService.showImmediateTestNotification();
+      await _notificationService.showAddHabitNotification(
+          id: habit.id,
+          title: habit.title,
+      );
     } catch (e) {
-      print("Immediate test failed: $e");
+      // Ignore notification errors
     }
 
     await loadHabits();
