@@ -104,7 +104,10 @@ jobs:
         run: dart run build_runner build -d
         
       - name: Build iOS (Unsigned)
-        run: flutter build ios --release --no-codesign
+        run: |
+          # force Xcode to not ask
+          sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
+          flutter build ios --release --no-codesign
       
       - name: Package IPA
         run: |
