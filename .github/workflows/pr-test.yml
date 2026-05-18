@@ -1,0 +1,28 @@
+name: Pull Request Validation
+on:
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  pr-validation:
+    name: 🛡️ Unit Test Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          
+      - name: Install Dependencies
+        run: flutter pub get
+        
+      - name: Run Unit Tests
+        run: flutter test test/domain/utils/
