@@ -24,5 +24,8 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
         
+      - name: Generate Code (Isar g.dart)
+        run: dart run build_runner build -d
+        
       - name: Run Unit Tests
         run: flutter test test/domain/utils/
