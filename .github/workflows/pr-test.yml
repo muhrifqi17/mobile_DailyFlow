@@ -5,7 +5,7 @@ on:
 
 jobs:
   pr-validation:
-    name: 🛡️ Unit Test Validation
+    name: Unit Test Validation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
