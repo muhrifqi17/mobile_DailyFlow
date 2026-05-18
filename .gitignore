@@ -43,3 +43,14 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# DailyFlow Custom Ignores
+.env
+*.g.dart
+*.freezed.dart
+*.isar
+*.sqlite
+*.sqlite3
+*.db
+/assets/secrets/
+key.properties
