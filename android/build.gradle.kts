@@ -28,6 +28,7 @@ subprojects {
         val configAction = Action<Project> {
             project.extensions.configure<com.android.build.gradle.LibraryExtension>("android") {
                 namespace = "dev.isar.isar_flutter_libs"
+                compileSdk = 36
             }
         }
         if (project.state.executed) {

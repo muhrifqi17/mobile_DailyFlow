@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.dailyflow.dailyflow"
-    compileSdk = 34
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
